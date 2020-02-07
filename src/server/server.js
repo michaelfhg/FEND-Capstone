@@ -38,23 +38,23 @@ app.get('/all',sendData);
 
 // Callback function to complete GET '/all'
 function sendData(req,res) {
-    res.send(projectData);
-    //projectData = [];
+  res.send(projectData);
+  projectData = [];
 
 }
 
-// Post Route
-//let data = [];
+// Post Route for City Coordinates
 
-app.post('/add', addData);
+app.post('/addCity', addCityData);
 
-function addData (req, res) {
-   console.log(req.body);
-   newEntry = {
+function addCityData (req, res) {
+  console.log(req.body);
+  cityData = {
    	date: req.body.date,
-   	temp: req.body.temp,
+   	longitude: req.body.longitude,
+    latitude: req.body.latitude,
+    country: req.body.country,
    	content: req.body.content
-   }
-
-   projectData.push(newEntry);
+  }
+  projectData.push(cityData);
 }

@@ -6,34 +6,31 @@ let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 
 // Personal API Key for OpenWeatherMap API
 
-let baseURL = 'http://api.geonames.org/searchJSON?formatted=true&q=';
-let apiKey = '&username=michaelfawzy';
-
-
+let geonamesEP = 'http://api.geonames.org/searchJSON?formatted=true&q=';
+let userName = '&username=michaelfawzy';
 
 // Event listener to add function to existing HTML DOM element
 document.getElementById('generate').addEventListener('click', performAction);
 
-
-/* Function called by event listener */
+// Function called by event listener
 function performAction(e){
     console.log('clicked')
-const newZip =  document.getElementById('zip').value;
-const feelings =  document.getElementById('feelings').value;
-getCity(baseURL,newZip, apiKey)
+    const cityName =  document.getElementById('city').value;
+    const feelings =  document.getElementById('feelings').value;
+    getCityCoordinates(geonamesEP,cityName, userName)
 
 	.then(function(data) {
 		console.log(data);
 		//Add data to POST request
-		postData('/add', {date:d, longitude:data.geonames[0].lng, content:feelings})
+		postData('http://localhost:8081/addCity', {date:d, longitude:data.geonames[0].lng, latitude:data.geonames[0].lat, country:data.geonames[0].countryName, content:feelings})
 	})
 	.then(updateUI());
 };
 
-/* Function to GET Web API Data*/
-const getCity = async (baseURL, zip, key)=>{
+/* Function to GET Geonames API Data*/
+const getCityCoordinates = async (geonamesEP, city, key)=>{
 
-	const res = await fetch(baseURL+zip+key)
+	const res = await fetch(geonamesEP+city+key)
 	try {
 		const data = await res.json();
 		return data;
@@ -70,11 +67,13 @@ const postData = async ( url = '', data = {})=>{
 /* Function to GET Project Data */
 
 const updateUI = async () => {
-  const request = await fetch('/all');
+  const request = await fetch('http://localhost:8081/all');
   try{
     const allData = await request.json();
     document.getElementById('date').innerHTML = `Date: ${allData[0].date}`;
-    document.getElementById('longitude').innerHTML = `Temperatuer: ${allData[0].longitude}`;
+    document.getElementById('longitude').innerHTML = `longitude: ${allData[0].longitude}`;
+    document.getElementById('latitude').innerHTML = `longitude: ${allData[0].latitude}`;
+    document.getElementById('country').innerHTML = `longitude: ${allData[0].country}`;
     document.getElementById('content').innerHTML = `I feel: ${allData[0].content}`;
 
   }catch(error){
@@ -82,4 +81,21 @@ const updateUI = async () => {
   }
 }
 
+/* Function to GET City Data and use it to get weather
+
+const updateUI = async () => {
+  const request = await fetch('http://localhost:8081/all');
+  try{
+    const allData = await request.json();
+    document.getElementById('date').innerHTML = `Date: ${allData[0].date}`;
+    document.getElementById('longitude').innerHTML = `longitude: ${allData[0].longitude}`;
+    document.getElementById('latitude').innerHTML = `longitude: ${allData[0].latitude}`;
+    document.getElementById('country').innerHTML = `longitude: ${allData[0].country}`;
+    document.getElementById('content').innerHTML = `I feel: ${allData[0].content}`;
+
+  }catch(error){
+    console.log("error", error);
+  }
+}
+*/
 module.exports = {performAction, getCity, postData,updateUI };
