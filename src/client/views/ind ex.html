@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Travel App</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+  <div id = "app">
+    <div class ="holder headline">
+      Travel App
+    </div>
+
+    <br>
+
+    <div class ="holder city">
+      <label for="city">Enter destination here</label>
+      <input type="text" id="city" placeholder="City name">
+    </div>
+
+    <br>
+
+    <div class ="holder start-date">
+      <label for="start-date">Start Date</label>
+      <input type="text" id="start-date" placeholder="DD-MM-YYYY">
+    </div>
+
+    <br>
+
+    <div class ="holder end-date">
+      <label for="end-date">End Date</label>
+      <input type="text" id="end-date" placeholder="DD-MM-YYYY">
+    </div>
+
+    <br>
+
+    <div class ="holder feel">
+      <button id="generate" type = "submit"> Generate </button>
+    </div>
+
+    <br>
+
+    <div class ="holder entry">
+        <div class = "title">Trip search results</div>
+        <div id = "entryHolder">
+          <img src="../media/destination-image.jpg" alt="destination image" > <!-- the 2 dots specifiy that pic is located in the folder one level up from the current folder -->
+
+          <div id = "destination">Your trip to: </div>
+          <div id = "date">Starts on: </div>
+          <div id = "forecast">Expected weather: </div>
+          <div id = "longitude"></div>
+          <div id = "latitude"></div>
+          <div id = "country"></div>
+          <div id = "content"></div>
+        </div>
+    </div>
+  </div>
+
+</body>
+</html>

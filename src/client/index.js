@@ -1,6 +1,6 @@
 import { chkLink } from './js/linkChecker'
 import { handleSubmit } from './js/formHandler'
-import {performAction, getCity, postData, updateUI } from './js/app.js'
+import {performAction, getCityCoordinates, postCityData, updateUI, getForecast } from './js/app.js'
 //import './styles/base.scss'
 //import './styles/form.scss'
 //import './styles/footer.scss'
@@ -14,5 +14,5 @@ import {performAction, getCity, postData, updateUI } from './js/app.js'
 export {
 	chkLink,
 	handleSubmit,
-	performAction, getCity, postData,updateUI
+	performAction, getCityCoordinates, postCityData, updateUI, getForecast
 }

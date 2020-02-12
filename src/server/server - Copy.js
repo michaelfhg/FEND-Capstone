@@ -1,5 +1,5 @@
 // Setup empty JS object to act as endpoint for all routes
-projectData = {};
+projectData = [];
 
 // Require Express to run server and routes
 const express= require('express');
@@ -33,21 +33,13 @@ function listening() {
   console.log(`Server running on localhost: ${port}`);
 }
 
-// Initialize "all" route with a callback function to send coordinates
-app.get('/coordinates',sendCoordData);
-
-// Callback function to complete GET '/coordinates'
-function sendCoordData(req,res) {
-  res.send(projectData.date, projectData.longitude, projectData.latitude);
-}
-
-// Initialize "all" route with a callback function to send all project data to UI
+// Initialize "all" route with a callback function
 app.get('/all',sendData);
 
 // Callback function to complete GET '/all'
 function sendData(req,res) {
   res.send(projectData);
-  projectData = {};
+  projectData = [];
 
 }
 
@@ -56,26 +48,13 @@ function sendData(req,res) {
 app.post('/addCity', addCityData);
 
 function addCityData (req, res) {
-	console.log(req.body);
-
-	projectData.date= req.body.date;
-	projectData.city= req.body.city;
-    projectData.country= req.body.country;
-	projectData.longitude= req.body.longitude;
-	projectData.latitude= req.body.latitude;
-	projectData.content= req.body.content;
-}
-
-app.post('/addWeather', addWeatherData);
-
-function addWeatherData (req, res) {
-	console.log(req.body);
-	projectData.weather= req.body.weather;
-}
-
-app.post('/addPhoto', addPhotoUrl);
-
-function addPhotoUrl (req, res) {
-	console.log(req.body);
-	projectData.photoUrl= req.body.photoUrl;
+  console.log(req.body);
+  cityData = {
+   	date: req.body.date,
+   	longitude: req.body.longitude,
+    latitude: req.body.latitude,
+    country: req.body.country,
+   	content: req.body.content
+  }
+  projectData.push(cityData);
 }
