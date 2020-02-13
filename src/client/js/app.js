@@ -78,7 +78,7 @@ let darkSkyEP = 'https://api.darksky.net/forecast/';
 
 // Function to GET Dark Sky API Data
 const getForecast = async (tripData)=>{
-    let secretKey = '29b4b5410e21b7c6d24fe212bb233451/';
+    let secretKey = '29b4b5410e21b7c6d24fe212bb233451';
     let lat = tripData.latitude;
     let lng = tripData.longitude;
 
