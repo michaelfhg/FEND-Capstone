@@ -1,4 +1,4 @@
-// Setup empty JS object to act as endpoint for all routes
+// Setup empty JS object to act as an endpoint for all routes
 projectData = {};
 
 // Require Express to run server and routes
@@ -33,23 +33,6 @@ function listening() {
   console.log(`Server running on localhost: ${port}`);
 }
 
-// Initialize "all" route with a callback function to send coordinates
-app.get('/coordinates',sendCoordData);
-
-// Callback function to complete GET '/coordinates'
-function sendCoordData(req,res) {
-  res.send(projectData.date, projectData.longitude, projectData.latitude);
-}
-
-// Initialize "all" route with a callback function to send all project data to UI
-app.get('/all',sendData);
-
-// Callback function to complete GET '/all'
-function sendData(req,res) {
-  res.send(projectData);
-  projectData = {};
-
-}
 
 // Post Route for City Coordinates
 
@@ -57,7 +40,6 @@ app.post('/addCity', addCityData);
 
 function addCityData (req, res) {
 	console.log(req.body);
-
 	projectData.date= req.body.date;
 	projectData.city= req.body.city;
     projectData.country= req.body.country;
@@ -78,4 +60,14 @@ app.post('/addPhoto', addPhotoUrl);
 function addPhotoUrl (req, res) {
 	console.log(req.body);
 	projectData.photoUrl= req.body.photoUrl;
+}
+
+// Initialize "all" route with a callback function to send all project data to UI
+app.get('/all',sendData);
+
+// Callback function to complete GET '/all'
+function sendData(req,res) {
+  res.send(projectData);
+  projectData = {};
+
 }

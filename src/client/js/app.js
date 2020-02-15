@@ -4,16 +4,12 @@ tripData= {};
 let d = new Date();
 let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 
-// End point & Username for GeoNames API
-
-let geonamesEP = 'http://api.geonames.org/searchJSON?formatted=true&q=';
-let userName = '&username=michaelfawzy';
-
 // Event listener to add function to existing HTML DOM element
 document.getElementById('generate').addEventListener('click', performAction);
 
 // Function called by event listener
 function performAction(e){
+
     console.log('clicked')
     const cityName =  document.getElementById('city').value;
     const feelings =  document.getElementById('feelings').value;
@@ -33,21 +29,16 @@ function performAction(e){
 		console.log(data);
 		//Add data to POST request
 		postCityData('http://localhost:8081/addCity', {date:d, city:data.geonames[0].name, country:data.geonames[0].countryName, longitude:data.geonames[0].lng, latitude:data.geonames[0].lat, content:feelings});
-        getForecast(tripData);
-
 	})
-	.then(updateUI())
 
+    getForecast(tripData)
+    .then(function(weatherData) {
+        console.log(weatherData);
+        postWeatherData('http://localhost:8081/addWeather', {weather:weatherData.hourly.summary})
+    })
 
-        /*
-        .then(function(weatherData) {
-            console.log(weatherData);
-            console.log(darkSkyEP);
+	updateUI();
 
-            //Add data to POST request
-            //postPhotoData('http://localhost:8081/addPhoto', {photoUrl:photoData.hits[0].largeImageURL})
-        })
-        */
 };
 
 
@@ -71,21 +62,13 @@ const getPhoto = async (pixabayEP, city, key)=> {
 
 }
 
-// End point & Secret Key for Dark Sky API
-
-let darkSkyEP = 'https://api.darksky.net/forecast/';
-
-
 // Function to GET Dark Sky API Data
 const getForecast = async (tripData)=>{
     let secretKey = '29b4b5410e21b7c6d24fe212bb233451';
     let lat = tripData.latitude;
     let lng = tripData.longitude;
 
-    const res = await fetch(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${secretKey}/${lat},${lng}`
-    //{mode: 'no-cors'}
-     // {credentials: 'same-origin'}
-     )
+    const res = await fetch(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${secretKey}/${lat},${lng}`)
     try {
         const weatherData = await res.json();
         console.log(weatherData);
@@ -122,7 +105,7 @@ const postWeatherData = async ( url = '', weatherData = {})=>{
 
 
 
-/* Function to POST Photo data to Server*/
+/* Function to POST Photo data to Local Server*/
 
 const postPhotoData = async ( url = '', photoData = {})=>{
     console.log(photoData);
@@ -144,6 +127,11 @@ const postPhotoData = async ( url = '', photoData = {})=>{
         console.log("error", error);
         }
 }
+
+// End point & Username for GeoNames API
+
+let geonamesEP = 'http://api.geonames.org/searchJSON?formatted=true&q=';
+let userName = '&username=michaelfawzy';
 
 
 /* Function to GET Geonames API Data*/
@@ -184,10 +172,10 @@ const postCityData = async ( url = '', data = {})=>{
     	}
 }
 
-/* Function to GET Project Data from server */
+/* Function to GET All Project Data from server */
 
 const updateUI = async () => {
-const request = await fetch('http://localhost:8081/all');
+    const request = await fetch('http://localhost:8081/all');
     try{
         const allData = await request.json();
         document.getElementById('date').innerHTML = `Date: ${allData.date}`;
