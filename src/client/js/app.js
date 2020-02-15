@@ -187,9 +187,10 @@ const postCityData = async ( url = '', data = {})=>{
 /* Function to GET Project Data from server */
 
 const updateUI = async () => {
-const request = await fetch('http://localhost:8081/all');
+    const allData = await fetch('http://localhost:8081/all')
+    .then(response => response.json());
+
     try{
-        const allData = await request.json();
         document.getElementById('date').innerHTML = `Date: ${allData.date}`;
         document.getElementById('longitude').innerHTML = `longitude: ${allData.longitude}`;
         document.getElementById('latitude').innerHTML = `latitude: ${allData.latitude}`;
