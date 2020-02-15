@@ -82,14 +82,14 @@ const getForecast = async (tripData)=>{
     let lat = tripData.latitude;
     let lng = tripData.longitude;
 
-    const res = await fetch(`https://api.darksky.net/forecast/${secretKey}/${lat},${lng}`,
-    {mode: 'no-cors'}
+    const res = await fetch(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${secretKey}/${lat},${lng}`
+    //{mode: 'no-cors'}
      // {credentials: 'same-origin'}
      )
     try {
         const weatherData = await res.json();
-        return weatherData;
         console.log(weatherData);
+        return weatherData;
     }catch(error) {
         console.log("error", error);
         // appropriately handle the error
@@ -187,19 +187,19 @@ const postCityData = async ( url = '', data = {})=>{
 /* Function to GET Project Data from server */
 
 const updateUI = async () => {
-  const request = await fetch('http://localhost:8081/all');
-  try{
-    const allData = await request.json();
-    document.getElementById('date').innerHTML = `Date: ${allData.date}`;
-    document.getElementById('longitude').innerHTML = `longitude: ${allData.longitude}`;
-    document.getElementById('latitude').innerHTML = `latitude: ${allData.latitude}`;
-    document.getElementById('country').innerHTML = `country: ${allData.country}`;
-    document.getElementById('content').innerHTML = `I feel: ${allData.content} <br> Photo URL: ${allData.photoUrl}`;
-    tripData.longitude = allData.longitude;
-    tripData.latitude = allData.latitude;
-  }catch(error){
-    console.log("error", error);
-  }
+    const allData = await fetch('http://localhost:8081/all')
+    .then(response => response.json());
+    try{
+        document.getElementById('date').innerHTML = `Date: ${allData.date}`;
+        document.getElementById('longitude').innerHTML = `longitude: ${allData.longitude}`;
+        document.getElementById('latitude').innerHTML = `latitude: ${allData.latitude}`;
+        document.getElementById('country').innerHTML = `country: ${allData.country}`;
+        document.getElementById('content').innerHTML = `I feel: ${allData.content} <br> Photo URL: ${allData.photoUrl}`;
+        tripData.longitude = allData.longitude;
+        tripData.latitude = allData.latitude;
+      }catch(error){
+        console.log("error", error);
+      }
 }
 
 
