@@ -34,7 +34,7 @@ function listening() {
 }
 
 
-// Post Route for city coordinates
+// Post Route for City Coordinates
 
 app.post('/addCity', addCityData);
 
@@ -48,16 +48,12 @@ function addCityData (req, res) {
 	projectData.content= req.body.content;
 }
 
-// Post Route for weather forecast
-
 app.post('/addWeather', addWeatherData);
 
 function addWeatherData (req, res) {
 	console.log(req.body);
 	projectData.weather= req.body.weather;
 }
-
-// Post Route for photo URL
 
 app.post('/addPhoto', addPhotoUrl);
 
@@ -70,6 +66,8 @@ function addPhotoUrl (req, res) {
 app.get('/all',sendData);
 
 // Callback function to complete GET '/all'
- function sendData(req,res) {
-   res.send(projectData);
+function sendData(req,res) {
+  res.send(projectData);
+  projectData = {};
+
 }
