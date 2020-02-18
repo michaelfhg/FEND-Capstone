@@ -3,44 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <title>Travel App</title>
+
 </head>
 
 <body>
-  <div id = "app">
-    <div class ="holder headline">
-      Travel App
-    </div>
-    <div class ="holder city">
-      <label for="city">Enter city name</label>
+
+  <header>
+    <h1>Travel App</h1>
+  </header>
+
+  <main>
+
+    <h2>Get information about your next trip</h2>
+
+    <section class="form">
+      <label for="city">Enter City Name</label>
       <input type="text" id="city" placeholder="City name">
-    </div>
 
-    <div class ="holder start-date">
-      <label for="start-date">Enter start date</label>
+      <label for="start-date">Enter Start Date</label>
       <input type="date" id="start-date" placeholder="Start Date">
-    </div>
 
-    <div class ="holder end-date">
-      <label for="end-date">Enter end date</label>
+      <label for="end-date">Enter End Date</label>
       <input type="date" id="end-date" placeholder="End Date">
-    </div>
 
-    <div class ="holder feel">
-      <label for="feelings">How are you feeling today?</label>
-      <textarea class= "myInput" id="feelings" placeholder="Enter your feelings here" rows="9" cols="50"></textarea>
       <button id="generate" type = "submit"> Generate </button>
-    </div>
-    <div class ="holder entry">
-        <div class = "title">Most Recent Entry</div>
-        <div id = "entryHolder">
-          <div id = "date"></div>
-          <div id = "longitude"></div>
-          <div id = "latitude"></div>
-          <div id = "country"></div>
-          <div id = "content"></div>
-        </div>
-    </div>
-  </div>
+    </section>
 
+    <section>
+      <strong>Trip Results:</strong>
+      <br>
+      <br>
+      <div id="results">
+        <div id = "date"></div>
+        <br>
+        <div id = "country"></div>
+        <br>
+        <div id = "weather-summary"></div>
+        <br>
+        <div id = "image"></div>
+     </div>
+    </section>
+  </main>
+
+  <footer>
+    <p><b>By Michael Fawzy</b></p>
+  </footer>
 </body>
 </html>

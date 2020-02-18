@@ -1,11 +1,6 @@
 /* Global Variables */
-const tripData= {};
+const tripData = {};
 // Create a new date instance dynamically with JS
-
-//let d = new Date();
-//let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
-
-
 
 // Event listener to add function to existing HTML DOM element
 document.getElementById('generate').addEventListener('click', performAction);
@@ -15,10 +10,16 @@ function performAction(e){
 
     console.log('clicked')
     const cityName =  document.getElementById('city').value;
-    const feelings =  document.getElementById('feelings').value;
-    const d = new Date(document.getElementById('start-date').value+'T00:00:00'); //Won't work if set as a global variable
-    const date = d.getTime()/1000;
+    const sD = new Date(document.getElementById('start-date').value); //Won't work if set as a global variable
+    const newSDate = sD.toString(); //converts the date to letters to be passed to server and displayed in words
+    tripData.startDate = sD.getTime()/1000; // date converted to Unix time (seconds since midnight GMT on 1 Jan 1970) to be used by Darks Sky API
+    const eD = new Date(document.getElementById('end-date').value);
+    const newEDate = eD.toString();
+    tripData.endDate = eD.getTime()/1000; // date converted to Unix time to be used by calculate trup duration
+    const tripDuration = (eD.getTime() - sD.getTime()) / 8.64e7 + ' days'; // divided by 8.64e7 to change milliseconds into days
+    tripData.tripDuration = tripDuration;
 
+    console.log('trip Duration', tripDuration)
 
     getPhoto(pixabayEP, cityName, key)
     .then(function(photoData) {
@@ -32,8 +33,8 @@ function performAction(e){
     .then(function(data) {
         console.log(data);
         //Add data to POST request
-        postCityData('http://localhost:8081/addCity', {date:d, city:data.geonames[0].name, country:data.geonames[0].countryName, longitude:data.geonames[0].lng, latitude:data.geonames[0].lat, content:feelings});
-        getForecast(tripData,date)
+        postCityData('http://localhost:8081/addCity', {startDate:newSDate, endDate: newEDate, city:data.geonames[0].name, country:data.geonames[0].countryName, longitude:data.geonames[0].lng, latitude:data.geonames[0].lat});
+        getForecast(tripData)
         .then(function(weatherData) {
             console.log(weatherData);
             postWeatherData('http://localhost:8081/addWeather', {weather:weatherData.currently.summary}) //some cities don't have summary if trip start is more than 2 weeks
@@ -66,12 +67,12 @@ const getPhoto = async (pixabayEP, city, key)=> {
 }
 
 // Function to GET Dark Sky API Data
-const getForecast = async (tripData, date)=>{
+const getForecast = async (tripData)=>{
     console.log(tripData)
     let secretKey = '29b4b5410e21b7c6d24fe212bb233451';
     const lat = tripData.latitude;
     const lng = tripData.longitude;
-    //const date = tripData.date;
+    const date = tripData.startDate;
 
     const res = await fetch(`https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${secretKey}/${lat},${lng},${date}`)
     try {
@@ -187,20 +188,14 @@ const updateUI = async () => {
     const request = await fetch('http://localhost:8081/all');
     try{
         const allData = await request.json();
-        document.getElementById('date').innerHTML = `Date: ${allData.date}`;
-        document.getElementById('longitude').innerHTML = `longitude: ${allData.longitude}`;
-        document.getElementById('latitude').innerHTML = `latitude: ${allData.latitude}`;
-        document.getElementById('country').innerHTML = `country: ${allData.country}`;
-        document.getElementById('content').innerHTML = `I feel: ${allData.content}
-        <br> Weather summury: ${allData.weather}
-        <br> <img src="${allData.photoUrl}" style="width:400px">`;
-
-        // tripData.longitude = allData.longitude;
-        // tripData.latitude = allData.latitude;
+        document.getElementById('date').innerHTML = `<i><b>Start Date:</b></i> ${allData.startDate} <br> <i><b>End Date:</b></i>: ${allData.endDate} <br> <i><b>Trip Duration:</b></i> ${tripData.tripDuration}`;
+        document.getElementById('weather-summary').innerHTML = `<i><b>Weather Summary (If avaialable):</b></i> ${allData.weather}`;
+        document.getElementById('image').innerHTML = `<i><b>Destination Photo:</b></i> <br> <br> <img src="${allData.photoUrl}" style="width:400px;margin-left: 200px;">`;
+        document.getElementById('country').innerHTML = `<i><b>City:</b></i> ${allData.city} <br> <i><b>Country:</b></i> ${allData.country}`;
       }catch(error){
         console.log("error", error);
       }
 }
 
 
-module.exports = {performAction, getCityCoordinates, postCityData, updateUI, getForecast };
+module.exports = {performAction, getPhoto, postPhotoData, getCityCoordinates, postCityData, getForecast, postWeatherData, updateUI};

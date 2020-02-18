@@ -40,12 +40,12 @@ app.post('/addCity', addCityData);
 
 function addCityData (req, res) {
 	console.log(req.body);
-	projectData.date= req.body.date;
+	projectData.startDate= req.body.startDate;
+	projectData.endDate= req.body.endDate;
 	projectData.city= req.body.city;
     projectData.country= req.body.country;
 	projectData.longitude= req.body.longitude;
 	projectData.latitude= req.body.latitude;
-	projectData.content= req.body.content;
 }
 
 // Post Route for weather forecast

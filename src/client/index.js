@@ -1,18 +1,7 @@
-import { chkLink } from './js/linkChecker'
-import { handleSubmit } from './js/formHandler'
-import {performAction, getCityCoordinates, postCityData, updateUI, getForecast } from './js/app.js'
-//import './styles/base.scss'
-//import './styles/form.scss'
-//import './styles/footer.scss'
-//import './styles/header.scss'
+import {performAction, getPhoto, postPhotoData, getCityCoordinates, postCityData, getForecast, postWeatherData, updateUI} from './js/app.js'
+import './styles/base.scss'
+import './styles/form.scss'
+import './styles/footer.scss'
+import './styles/header.scss'
 
-//import 'styles/_custom.scss'
-
-//import 'styles/style.scss'
-
-// Import event listener from app.js
-export {
-	chkLink,
-	handleSubmit,
-	performAction, getCityCoordinates, postCityData, updateUI, getForecast
-}
+export {performAction, getPhoto, postPhotoData, getCityCoordinates, postCityData, getForecast, postWeatherData, updateUI}
