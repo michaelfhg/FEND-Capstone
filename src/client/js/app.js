@@ -2,8 +2,11 @@
 const tripData = {};
 // Create a new date instance dynamically with JS
 
+
 // Event listener to add function to existing HTML DOM element
-document.getElementById('generate').addEventListener('click', performAction);
+document.addEventListener('DOMContentLoaded', function () {  //Used DOMContentLoaded for Jest tests to work
+  document.getElementById('generate').addEventListener('click', performAction);
+});
 
 // Function called by event listener
 function performAction(e){
